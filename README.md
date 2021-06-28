@@ -8,7 +8,7 @@ Neural Network Binary Classifier
 
 
 ## Results
- Neural Network models require data preprocessing.  Below is a summary of the approaches / steps taken:
+ Preprocessing: steps taken:
    * The 'IS_SUCCESSFUL' variable is the target for this analysis. Alphabet Soup has provided this boolean indicator to identify successful donations.
    * Upon examining the remaining features the following choices were made:
     
@@ -19,16 +19,33 @@ Neural Network Binary Classifier
       
       - The non-numeric features were identified and a category analysis performed on all of them.  Both 'APPLICATION_TYPE' and 'CLASSIFICATION' had more than ten (10) categories so the less common categories were consolidated into an 'Other' group.
       
-      - Finally, all the non-numeric categories were processed using the OneHotEncoder method creating new boolean columns for each category and the original features were dropped.
+      - All the non-numeric categories were processed using the OneHotEncoder method creating new boolean columns for each category and the original features were dropped.
+      - All features were scaled using the sklearn StandardScaler module
  
- After the preprocessing is completed the model is built, compiled, trained, and evaluated.  
-   * The initial model had one(1) hidden layer and twenty-two(22) neurons, about have the number of the input features. (For model ROT, see : https://towardsdatascience.com/17-rules-of-thumb-for-building-a-neural-network-93356f9930af)
-
+ Model creation: design, compilation, evaluation.  
+   * The initial model had one(1) hidden layer and twenty-two(22) neurons, about have the number of the input features (see [ROT](https://towardsdatascience.com/17-rules-of-thumb-for-building-a-neural-network-93356f9930af)). The single hidden layer used the RELU activation function; RELU is one of the most frequently used functions and is a good starting point. The output function used for all iterations is a sigmoid function as the expected result is boolean, i.e., the applicant will be effective/approved or not.  50 epochs were chosen as a starting point.
+      - Initial results were modest and did *not* achieve an accuracy of > 75%.  See full results below in [Table 1](#Table-1-Summary-of-Results-and-Optimizations)
+   * Options changed to try and increase the accuracy of the model:
+      - Add a second hidden layer with 11 neurons, using RELU, 50 epoch
+      - Increase the number of neurons on each hidden layer from (22,11) to (32,16), 50 epoch
+      - Using 2 hidden layers, (32,16) neurons, increase to 200 epoch
+   * _None_ of the optimizations resulted in improved accuracy and should be dropped (they only added complexity and elongated run times).  
 
 ## Summary
-Only the EasyEnsemble presents as a reasonable model and could be used to flag early potential issues but further analysis and improvements (or alternatives) before using in a production setting.  All the other models are inadequate to use.  They will poorly identify actual loss scenarios while identifying too many false positives - certainly a negative for customer satisfaction.
+The results of the original model and optimizations undertaken are in [Table 1](#Table-1-Summary-of-Results-and-Optimizations).  While some additional options (using different activation functions) ot further data analysis might yield some improvement, it is recommended that a RandomForest Classification model be tested as an alternative. RandomForest models provide many benefits. In this case the robust handling of outlier and nonlinear data (ASK_AMT) and the additional insight provided by feature importance ranking should provide better results.
 
  ## Resources
- Data: Lending Club provided credit history
+ Data: Applicant detail file provided by Alphabet Soup
 
- Software: Python 3.7.10, Jupyter Notebook 6.3, pandas 1.2.4, numpy 1.19.5, scikit-learn 0.24.1, imbalanced-learn 0.8.0, Git Bash 4.4.23
+ Software: Python 3.7.10, Jupyter Notebook 6.3, pandas 1.2.4, numpy 1.19.5, scikit-learn 0.24.1, tensorflow 2.5.0, Git Bash 4.4.23
+
+
+
+## Table 1. Summary of Results and Optimizations
+| Model Trial        | Loss   | Accuracy | Comments                                                             |
+| :----------------- | :----- | :------- | :------------------------------------------------------------------- |
+| Base Model (D1/D2) | 0.5540 | 0.7286   | Basic data cleanup / encoding, one hidden layer (RELU, 22), 50 epoch |
+| Option 1           | 0.5537 | 0.7277   | Add a second hidden layer (RELU, 11), 50 epoch                       |
+| Option 2           | 0.5559 | 0.7303   | Increase the neurons from (22, 11) to (32,16), 50 epoch              |
+| Option 3           | 0.5644 | 0.7276   | Option 2 plus increase to 200 epoch                                  |
+
