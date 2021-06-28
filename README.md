@@ -22,7 +22,7 @@ Neural Network Binary Classifier
       - Finally, all the non-numeric categories were processed using the OneHotEncoder method creating new boolean columns for each category and the original features were dropped.
  
  After the preprocessing is completed the model is built, compiled, trained, and evaluated.  
-   * The initial model had one(1) hidden layer and twenty-two(22) neurons, about have the number of the input features. (For model ROT, see : https://towardsdatascience.com/17-rules-of-thumb-for-building-a-neural-network-93356f9930af)
+   * The initial model had one(1) hidden layer and twenty-two(22) neurons, about have the number of the input features. (For model ROT, see : [RulesofThumb](https://towardsdatascience.com/17-rules-of-thumb-for-building-a-neural-network-93356f9930af)
 
 
 ## Summary
